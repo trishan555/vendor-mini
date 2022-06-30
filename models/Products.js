@@ -1,6 +1,5 @@
-const mongoose = require('mongoose')
-
-const Schema = mongoose.Schema
+import { mongoose } from 'mongoose'
+const { Schema } = mongoose
 
 const productSchema = new Schema({
     sku: {
@@ -20,16 +19,13 @@ const productSchema = new Schema({
         type: String,
         required: false,
     },
-    imgIds: {
-        type: Array,
-    },
 
-    imgs: {
+    fileName: {
         type: String,
-        required: false,
+        required: true,
     },
 })
 
 const Product = mongoose.model('Product', productSchema)
 
-module.exports = Product
+export default Product

@@ -1,4 +1,5 @@
 import express from 'express'
+import upload from '../middleware/multer.js'
 
 const router = express.Router()
 
@@ -8,12 +9,12 @@ import {
     getAllProducts,
     getSingleProduct,
     updateProduct,
-} from '../controllers/product'
+} from '../controllers/productController.js'
 
-router.post('/product/addProduct', addProduct)
+router.post('/product/addProduct', upload, addProduct)
 router.get('/product/fetchProducts', getAllProducts)
-router.get('/product/fetch-single-Product', getSingleProduct)
-router.delete('/product/deleteProduct', deleteProduct)
-router.put('/product/updateProduct', updateProduct)
+router.get('/product/fetch-single-Product/:id', getSingleProduct)
+router.delete('/product/deleteProduct/:id', deleteProduct)
+router.put('/product/updateProduct/:id', updateProduct)
 
-module.exports = router
+export default router

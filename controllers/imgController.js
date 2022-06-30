@@ -1,18 +1,6 @@
-import multer from 'multer'
-import Image from '../models/image'
-import fs from 'fs'
-import path from 'path'
-
-const Storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './uploads')
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname)
-    },
-})
-
-const upload = multer({ storage: Storage }).single('file')
+import { Image } from '../models/Images.js'
+import { fs } from 'fs'
+import { path } from 'path'
 
 export const uploadImage = async (req, res) => {
     upload(req, res, async (err) => {

@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+import { mongoose } from 'mongoose'
 
-const Schema = mongoose.Schema
+const { Schema } = mongoose
 
 const imageSchema = new Schema(
     {
@@ -8,13 +8,13 @@ const imageSchema = new Schema(
             type: String,
             required: true,
         },
-        image: {
-            type: Buffer,
+        img: {
+            data: Buffer,
             contentType: String,
         },
     },
     { timestamps: true }
 )
 
-const Image = mongoose.model('Image', imageSchema)
-module.exports = Image
+const ImageSchema = mongoose.model('Image', imageSchema)
+export default ImageSchema

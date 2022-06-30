@@ -1,7 +1,19 @@
-import Product from '../models/product'
+import Product from '../models/Products.js'
 
 export const addProduct = async (req, res) => {
-    const { product } = req.body
+    const sku = req.body.sku
+    const name = req.body.name
+    const qty = Number(req.body.qty)
+    const desc = req.body.desc
+    const { fileName } = req.file
+
+    const product = new Product({
+        sku,
+        name,
+        qty,
+        desc,
+        fileName,
+    })
 
     await Product.create(product)
         .then((product) => {
@@ -14,7 +26,7 @@ export const addProduct = async (req, res) => {
         .catch((err) => {
             return res.status(500).json({
                 success: false,
-                message: 'SKU ID already exists',
+                message: 'Product adding failed',
                 error: err,
             })
         })
@@ -38,14 +50,13 @@ export const getAllProducts = async (req, res) => {
 }
 
 export const deleteProduct = async (req, res) => {
-    const { productId } = req.query
+    const productId = req.params.id
 
     await Product.findByIdAndDelete(productId)
-        .then((product) => {
+        .then(() => {
             return res.status(200).json({
                 success: true,
                 message: 'Product deleted successfully',
-                product: product,
             })
         })
         .catch((err) => {
@@ -58,14 +69,14 @@ export const deleteProduct = async (req, res) => {
 }
 
 export const getSingleProduct = async (req, res) => {
-    const { productId } = req.query
+    let productId = req.params.id
 
     await Product.findById(productId)
         .then((product) => {
-            return res.status(200).json({
+            return res.status(200).send({
                 success: true,
                 message: 'Product retrieved successfully',
-                product: product,
+                product,
             })
         })
         .catch((err) => {
@@ -78,14 +89,24 @@ export const getSingleProduct = async (req, res) => {
 }
 
 export const updateProduct = async (req, res) => {
-    const { productId, product } = req.body
+    const productId = req.params.id
 
-    await Product.findByIdAndUpdate(productId, product)
+    const { sku, name, qty, desc } = req.body
+    const fileName = req.file
+
+    const updateProduct = {
+        sku,
+        name,
+        qty,
+        desc,
+        fileName,
+    }
+
+    await Product.findByIdAndUpdate(productId, updateProduct)
         .then((product) => {
             return res.status(200).json({
                 success: true,
                 message: 'Product updated successfully',
-                product: product,
             })
         })
         .catch((err) => {
